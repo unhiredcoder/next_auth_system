@@ -1,0 +1,106 @@
+/* Base styles */
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-content: center;
+}
+
+.profileContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 800px;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.header {
+  background-color: #3498db;
+  color: white;
+  padding: 20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.greeting {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.2em;
+  font-style: italic;
+}
+
+.main {
+  padding: 20px;
+}
+
+.profileInfo,
+.contactInfo {
+  margin-bottom: 20px;
+}
+
+.profileInfo h2,
+.contactInfo h2 {
+  color: #3498db;
+  font-size: 1.5em;
+}
+
+.profileInfo p {
+  font-size: 1.2em;
+  line-height: 1.5;
+}
+
+.logoutButton {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: background-color 0.3s;
+}
+
+.logoutButton:hover {
+  background-color: #c0392b;
+}
+
+/* Media Queries for Responsive Design */
+
+@media screen and (max-width: 768px) {
+  .profileContainer {
+    width: 90%;
+    padding: 10px;
+  }
+
+  .greeting {
+    font-size: 1.5em;
+  }
+
+  .subtitle {
+    font-size: 1em;
+  }
+
+  .profileInfo h2,
+  .contactInfo h2 {
+    font-size: 1.2em;
+  }
+
+  .profileInfo p {
+    font-size: 1em;
+  }
+
+  .logoutButton {
+    padding: 8px 16px;
+    font-size: 1em;
+  }
+}
+
+/* Add more media queries as needed for specific breakpoints */
