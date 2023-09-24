@@ -11,7 +11,7 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase.js';
 import toast, { Toaster } from 'react-hot-toast';
 
-const Register = () => {
+const register = () => {
   const router = useRouter();
 
   // Add a state variable to check if it's running on the client

@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useClient } from 'react';
 import { OtpContext } from '../OtpProvider.js'; // Adjust the path as needed
 import OtpInput from 'otp-input-react';
 import { useRouter, } from 'next/navigation';
@@ -25,17 +25,16 @@ const NewPassword = () => {
         }
     }
     const handleValidation = () => {
-        if (typeof window !== "undefined") {
-            // Check if entered OTP matches the generated OTP OR if NewgeneratedOtp exists
-            if (enteredOtp === details.generatedOtp || enteredOtp === ResendNewOtp && enteredOtp !== '') {
-                router.push('/recoverpass');
-            } else {
-                // If neither condition is true, show an alert or handle the incorrect OTP case.
-                setIsOtpIncorrect(true);
-            }
+        if (useClient()) {
+          // Check if entered OTP matches the generated OTP OR if NewgeneratedOtp exists
+          if (enteredOtp === details.generatedOtp || enteredOtp === ResendNewOtp && enteredOtp !== '') {
+            router.push('/recoverpass');
+          } else {
+            // If neither condition is true, show an alert or handle the incorrect OTP case.
+            setIsOtpIncorrect(true);
+          }
         }
-    };
-
+      };
     return (
         <div style={{
             display: 'flex',
