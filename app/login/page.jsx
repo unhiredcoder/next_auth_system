@@ -31,8 +31,8 @@ const Login = () => {
 
 
   async function handlegoogleLogin() {
-    const provider = new GoogleAuthProvider();
     if (typeof window !== "undefined") {
+    const provider = new GoogleAuthProvider();
       // Your client-side code here
     
     try {

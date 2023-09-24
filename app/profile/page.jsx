@@ -9,34 +9,39 @@ const Profile = () => {
   const router = useRouter();
   const [user, setUser] = useState('')
   const [email, setEmail] = useState('')
+ // Add a state variable to check if it's running on the client
+ const [isClient, setIsClient] = useState(false);
 
-  async function logout() {
-    if (typeof window !== "undefined") {
-      // Your client-side code here
-      
-      try {
-        const response = await axios.get('/api/user/logout');
-        if (response.status === 200) {
-          router.push('/login');
-        } else {
-          console.error("Logout failed");
-        }
-      } catch (error) {
-        console.error("An error occurred during logout:", error);
-      }
-    }
-  }
+ useEffect(() => {
+   setIsClient(true); // Set isClient to true when the component mounts (client-side)
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Your client-side code here
-      const user = localStorage.getItem('userData')
-      if (user) {
-        setUser(JSON.parse(user).name)
-        setEmail(JSON.parse(user).Email)
-      }
-    }
-    }, [])
+   // Check if it's running on the client before accessing window or localStorage
+   if (isClient) {
+     const userData = localStorage.getItem('userData');
+     if (userData) {
+       const parsedUserData = JSON.parse(userData);
+       setUser(parsedUserData.name);
+       setEmail(parsedUserData.Email);
+     }
+   }
+ }, []);
+
+ const logout = async () => {
+   // Check if it's running on the client before making client-side requests
+   if (isClient) {
+     try {
+       const response = await axios.get('/api/user/logout');
+       if (response.status === 200) {
+         router.push('/login');
+       } else {
+         console.error("Logout failed");
+       }
+     } catch (error) {
+       console.error("An error occurred during logout:", error);
+     }
+   }
+ };
+
 
   return (
     <div className={styles.profileContainer}>

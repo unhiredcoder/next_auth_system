@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Form, Input, Typography } from 'antd';
 import { UserOutlined, LockOutlined, GoogleOutlined } from '@ant-design/icons';
 import Link from 'next/link';
@@ -7,47 +7,54 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import styles from '../app.module.css';
 const { App } = styles;
-import { signInWithPopup,GoogleAuthProvider } from 'firebase/auth'
-import { auth } from '../firebase.js'
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { auth } from '../firebase.js';
 import toast, { Toaster } from 'react-hot-toast';
 
-
-
-
-const register = () => {
+const Register = () => {
   const router = useRouter();
+
+  // Add a state variable to check if it's running on the client
+  const [isClient, setIsClient] = React.useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // Set isClient to true when the component mounts (client-side)
+  }, []);
+
   const onFinish = async (values) => {
-    try {
-      const response = await axios.post("/api/user/register", values); // Removed "api" prefix to make the request relative
-      if (response.status === 201) {
-        localStorage.setItem('userData', JSON.stringify(response.data));
-        router.push('/login');
+    if (isClient) {
+      try {
+        const response = await axios.post("/api/user/register", values); // Removed "api" prefix to make the request relative
+        if (response.status === 201) {
+          localStorage.setItem('userData', JSON.stringify(response.data));
+          router.push('/login');
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
-
   async function handlegoogleLogin() {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = {
-        name: result.user.displayName,
-        Email:result.user.email
-      }
+    if (isClient) {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = {
+          name: result.user.displayName,
+          Email: result.user.email,
+        };
 
-      const response = await axios.post("/api/user/google-login", { user });
-      if (response.status === 200) {
-        console.log(user);
-        const result = localStorage.setItem('userData', JSON.stringify(user));
-        router.push("/profile")
-        toast.success('Logged In successfully')
+        const response = await axios.post("/api/user/google-login", { user });
+        if (response.status === 200) {
+          console.log(user);
+          const result = localStorage.setItem('userData', JSON.stringify(user));
+          router.push("/profile");
+          toast.success('Logged In successfully');
+        }
+      } catch (error) {
+        console.error("Error during Google login:", error);
       }
-
-    } catch (error) {
-      console.error("Error during Google login:", error);
     }
   }
 

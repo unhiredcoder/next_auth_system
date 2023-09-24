@@ -8,6 +8,8 @@ import { OtpContext } from '../OtpProvider.js'; // Adjust the path as needed
 const { App } = styles;
 const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
+
+
 const onFinish = async (values, setDetails, router) => {
   if (typeof window !== "undefined") {
     const AllDetails = {
