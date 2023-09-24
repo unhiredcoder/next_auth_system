@@ -10,7 +10,6 @@ export const POST = async (NextRequest) => {
     try {
         const body = await NextRequest.json();
         const { email, password } = body;
-        console.log("🚀 ~ file: route.js:13 ~ POST ~ body:", body)
 
         if (!email || !password) {
             return new NextResponse("Email and password are required!", {
