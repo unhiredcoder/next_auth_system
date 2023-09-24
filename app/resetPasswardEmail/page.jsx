@@ -4,22 +4,27 @@ import { Button, Form, Input } from 'antd';
 import styles from '../app.module.css';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+
+// Import the OtpContext
 import { OtpContext } from '../OtpProvider.js'; // Adjust the path as needed
+
 const { App } = styles;
+
 const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-
-
-
-const onFinish = async (values, setDetails, router) => {
-  if (typeof window !== "undefined") {
-    const AllDetails = {
-      ...values,
-      generatedOtp
-    };
-    setDetails(AllDetails);
-    console.log("🚀 ~ file: page.jsx:21 ~ onFinish ~ allvalues:", await details);
+const resetPasswardEmail = () => {
+  // Your client-side code here
+  const { details, setDetails } = useContext(OtpContext);
+  console.log("🚀 ~ file: page.jsx:15 ~ resetPasswardEmail ~ otp:", details)
+  const router = useRouter();
+  const onFinish = async (values) => {
+    if (typeof window !== "undefined") {
+    const  AllDetails={
+      ...values,generatedOtp
+    }
+    setDetails(AllDetails)
+    console.log("🚀 ~ file: page.jsx:21 ~ onFinish ~ allvalues:", await details)
     try {
-      const response = await axios.post('/api/user/resetEmail', { details });
+      const response = await axios.post('/api/user/resetEmail', {details});
       if (response.status === 200) {
         console.log('Email sent successfully');
         router.push("/otpverify");
@@ -32,18 +37,15 @@ const onFinish = async (values, setDetails, router) => {
       console.error('Error:', error);
       // Handle the error, e.g., show an error message to the user
     }
-  }
-};
+    }
+  };
 
 
-const resetPasswardEmail = () => {
-  const { details, setDetails } = useContext(OtpContext);
-  const router = useRouter();
-  console.log("🚀 ~ file: page.jsx:15 ~ resetPasswardEmail ~ otp:", details)
   return (
     <>
       <div className={App}>
-      <Form onFinish={(values) => onFinish(values, setDetails, router)}
+        <Form
+          onFinish={onFinish}
           autoComplete="off"
         >
           <Form.Item
