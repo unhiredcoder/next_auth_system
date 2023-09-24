@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { OtpContext } from '../OtpProvider.js'; // Adjust the path as needed
 import OtpInput from 'otp-input-react';
 import { useRouter, } from 'next/navigation';
@@ -17,23 +17,33 @@ const NewPassword = () => {
         setEnteredOtp(otp);
         setIsOtpIncorrect(false);
     };
-
     const ResendOtp = async () => {
         const response = await axios.post('/api/user/resetEmail', { ...details, generatedOtp: ResendNewOtp });
         if (response.status === 200) {
             toast.success('Email Resend successfully')
         }
     }
-    const handleValidation = () => {
-        if (typeof window !== "undefined") {
-            if (enteredOtp === details.generatedOtp || enteredOtp === ResendNewOtp && enteredOtp !== '') {
-                router.push('/recoverpass');
-            } else {
-                // If neither condition is true, show an alert or handle the incorrect OTP case.
-                setIsOtpIncorrect(true);
+    useEffect(() => {
+        const handleValidation = () => {
+            if (typeof window !== "undefined") {
+                if (enteredOtp === details.generatedOtp || enteredOtp === ResendNewOtp) {
+                    router.push('/recoverpass');
+                } else {
+                    setIsOtpIncorrect(true);
+                }
             }
-        }
-    };
+        };
+
+        // Attach the click event listener for the "Verify OTP" button
+        const verifyButton = document.getElementById('verifyButton');
+        verifyButton.addEventListener('click', handleValidation);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            verifyButton.removeEventListener('click', handleValidation);
+        };
+    }, [enteredOtp, details.generatedOtp, router]);
+
     return (
         <div style={{
             display: 'flex',
@@ -75,6 +85,7 @@ const NewPassword = () => {
                 </div>
             )}
             <button
+                id="verifyButton" // Add an ID to the button
                 style={{
                     marginTop: '20px',
                     padding: '10px 20px',
@@ -85,11 +96,10 @@ const NewPassword = () => {
                     borderRadius: '5px',
                     cursor: 'pointer',
                 }}
-                onClick={handleValidation}
             >
                 Verify OTP
             </button>
-            <p>Didn't get otp ? <u onClick={ResendOtp}>Resend</u></p>
+            <p>Didn't get OTP? <u onClick={ResendOtp}>Resend</u></p>
         </div>
     );
 };
