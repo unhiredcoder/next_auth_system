@@ -11,25 +11,32 @@ const Profile = () => {
   const [email, setEmail] = useState('')
 
   async function logout() {
-    try {
-      const response = await axios.get('/api/user/logout');
-      if (response.status === 200) {
-        router.push('/login');
-      } else {
-        console.error("Logout failed");
+    if (typeof window !== "undefined") {
+      // Your client-side code here
+      
+      try {
+        const response = await axios.get('/api/user/logout');
+        if (response.status === 200) {
+          router.push('/login');
+        } else {
+          console.error("Logout failed");
+        }
+      } catch (error) {
+        console.error("An error occurred during logout:", error);
       }
-    } catch (error) {
-      console.error("An error occurred during logout:", error);
     }
   }
 
   useEffect(() => {
-    const user = localStorage.getItem('userData')
-    if (user) {
-      setUser(JSON.parse(user).name)
-      setEmail(JSON.parse(user).Email)
+    if (typeof window !== "undefined") {
+      // Your client-side code here
+      const user = localStorage.getItem('userData')
+      if (user) {
+        setUser(JSON.parse(user).name)
+        setEmail(JSON.parse(user).Email)
+      }
     }
-  }, [])
+    }, [])
 
   return (
     <div className={styles.profileContainer}>

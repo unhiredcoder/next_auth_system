@@ -12,16 +12,19 @@ const { App } = styles;
 
 const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
 const resetPasswardEmail = () => {
-  const { details, setDetails } = useContext(OtpContext);
-  console.log("🚀 ~ file: page.jsx:15 ~ resetPasswardEmail ~ otp:", details)
-  const router = useRouter();
-  const onFinish = async (values) => {
-    const  AllDetails={
-      ...values,generatedOtp
-    }
-    setDetails(AllDetails)
-    console.log("🚀 ~ file: page.jsx:21 ~ onFinish ~ allvalues:", await details)
-    try {
+  if (typeof window !== "undefined") {
+    // Your client-side code here
+    
+    const { details, setDetails } = useContext(OtpContext);
+    console.log("🚀 ~ file: page.jsx:15 ~ resetPasswardEmail ~ otp:", details)
+    const router = useRouter();
+    const onFinish = async (values) => {
+      const  AllDetails={
+        ...values,generatedOtp
+      }
+      setDetails(AllDetails)
+      console.log("🚀 ~ file: page.jsx:21 ~ onFinish ~ allvalues:", await details)
+      try {
       const response = await axios.post('/api/user/resetEmail', {details});
       if (response.status === 200) {
         console.log('Email sent successfully');
@@ -34,6 +37,7 @@ const resetPasswardEmail = () => {
     } catch (error) {
       console.error('Error:', error);
       // Handle the error, e.g., show an error message to the user
+    }
     }
   };
 

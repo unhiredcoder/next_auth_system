@@ -25,6 +25,9 @@ const PasswordForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (typeof window !== "undefined") {
+      // Your client-side code here
+    
     if (password === confirmPassword) {
       try {
         const response = await axios.post("/api/user/recoverpass", {
@@ -46,7 +49,8 @@ const PasswordForm = () => {
     } else {
       toast.error('Passwords do not match');
     }
-  };
+  }
+};
 
   return (
     <div className={App}>

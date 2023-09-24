@@ -32,6 +32,9 @@ const Login = () => {
 
   async function handlegoogleLogin() {
     const provider = new GoogleAuthProvider();
+    if (typeof window !== "undefined") {
+      // Your client-side code here
+    
     try {
       const result = await signInWithPopup(auth, provider);
       const user = {
@@ -52,6 +55,7 @@ const Login = () => {
     } catch (error) {
       console.error("Error during Google login:", error);
     }
+  }
   }
 
   const { App } = styles;

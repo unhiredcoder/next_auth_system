@@ -25,12 +25,14 @@ const NewPassword = () => {
         }
     }
     const handleValidation = () => {
-        // Check if entered OTP matches the generated OTP OR if NewgeneratedOtp exists
-        if (enteredOtp === details.generatedOtp || enteredOtp === ResendNewOtp && enteredOtp !== '') {
-            router.push('/recoverpass');
-        } else {
-            // If neither condition is true, show an alert or handle the incorrect OTP case.
-            setIsOtpIncorrect(true);
+        if (typeof window !== "undefined") {
+            // Check if entered OTP matches the generated OTP OR if NewgeneratedOtp exists
+            if (enteredOtp === details.generatedOtp || enteredOtp === ResendNewOtp && enteredOtp !== '') {
+                router.push('/recoverpass');
+            } else {
+                // If neither condition is true, show an alert or handle the incorrect OTP case.
+                setIsOtpIncorrect(true);
+            }
         }
     };
 
