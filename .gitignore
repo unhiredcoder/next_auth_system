@@ -13,11 +13,14 @@
 /.next/
 /out/
 
+
 # production
-/build
-/otpverify
-/recoverpass
-/resetPasswordEmail
+# /build
+/next_auth_system/app/otpverify
+/next_auth_system/app/recoverpass
+/next_auth_system/app/resetPasswordEmail
+
+
 
 # misc
 .DS_Store
